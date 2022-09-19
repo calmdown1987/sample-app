@@ -52,8 +52,12 @@ p {
 
 /* ヘッダー */
 
-.header {
-  background-color: #008080;
+header {
+  color:#fff;
+}
+
+#header {
+  background-color: teal;
 }
 
 #logo {
@@ -75,7 +79,7 @@ p {
 }
 
 .header-list {
-  color: #fff;
+  color: #fff !important;
   font-weight: bold;
 }
 
@@ -88,7 +92,7 @@ p {
   transition: 0.6s;
 }
 
-.dropdown-title {
+#dropdown-title {
   background-color: teal;
 }
 

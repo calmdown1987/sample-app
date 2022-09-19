@@ -1,4 +1,4 @@
-<header class="header navbar navbar-fixed-top navbar-inverse">
+<header class="header navbar navbar-fixed-top navbar-inverse" id="header">
   <div class="container">
     <%= link_to "Task App", root_path, id: "logo" %>
     <nav>
@@ -11,10 +11,10 @@
             <%= current_user.name %><b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <li><%= link_to "プロフィール", current_user, class: "header-list" %></li>
-              <li><%= link_to "設定", '#', class:"header-list" %></li>
+              <li><%= link_to "プロフィール", current_user %></li>
+              <li><%= link_to "設定", '#' %></li>
               <li class="divider"></li>
-              <li><%= link_to "ログアウト", logout_path, method: :delete, class: "header-list" %></li>
+              <li><%= link_to "ログアウト", logout_path, method: :delete %></li>
             </ul>
           </li>
         <% else %>
