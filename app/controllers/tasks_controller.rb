@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
 before_action:set_user
+before_action:set_task, only: %i(show edit update destroy)
 
   def index
     @tasks = @user.tasks
@@ -12,9 +13,17 @@ before_action:set_user
   def create
     @task = @user.tasks.build(params_task)
     if @task.save
-    redirect_to user_tasks_url
+       redirect_to user_tasks_url
     else
-    render :new
+       render :new
+    end
+  end
+  
+  def update
+    if @task.update_attributes(params_task)
+       redirect_to user_tasks_url
+    else
+      render :edit
     end
   end
   
@@ -22,6 +31,10 @@ before_action:set_user
   end
 
   def edit
+  end
+  
+  def set_task
+    @task = @user.tasks.find_by(id: params[:id])
   end
 
   def set_user
