@@ -33,6 +33,12 @@ before_action:set_task, only: %i(show edit update destroy)
   def edit
   end
   
+  def destroy
+    @task.destroy
+    flash[:notice] = "タスクを削除しました。"
+    redirect_to user_tasks_url
+  end
+  
   def set_task
     @task = @user.tasks.find_by(id: params[:id])
   end
