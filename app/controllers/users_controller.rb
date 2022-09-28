@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only:[:show, :edit, :update]
-  before_action :admin_user, only:[:index,:destroy]
-  before_action :correct_user, only:[:show]
+  before_action :set_user, only:[:show, :update, :edit, :destroy, :correct_user, :admin_or_correct_user]
+  before_action :logged_in_user, only:[:index,:show,:update]
+  before_action :admin_user, only:[:index]
+  before_action :correct_user, only:[:edit]
+  before_action :admin_or_correct_user, only:[:show]
 
   def show
-    @user = User.find(params[:id])
   end
   
   def index
@@ -27,17 +28,14 @@ class UsersController < ApplicationController
   end
   
   def update
-    @user = User.find(params[:id])
     @user.update_attributes(user_params)
     redirect_to @user
   end
   
   def edit
-    @user = User.find(params[:id])
   end
   
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
     redirect_to users_url
   end
@@ -67,10 +65,17 @@ class UsersController < ApplicationController
     end
     
     def correct_user
-      @user = User.find(params[:id])
         unless @user == current_user
           flash[:danger] = "登録者本人のみがアクセスできます"
           redirect_to login_url
         end
+    end
+
+    def admin_or_correct_user
+      @user = User.find(params[:user_id]) if @user.blank?
+      unless current_user?(@user) || current_user.admin?
+        flash[:danger] = "編集権限がありません。"
+        redirect_to(root_url)
+      end
     end
 end

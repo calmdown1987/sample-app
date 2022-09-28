@@ -1,6 +1,9 @@
 class TasksController < ApplicationController
 before_action:set_user
 before_action:set_task, only: %i(show edit update destroy)
+before_action:task_logged_in_user, only:[:index,:new,:show,:edit]
+before_action:correct_user, only:[:index,:new,:show,:edit]
+
 
   def index
     @tasks = @user.tasks
@@ -50,4 +53,19 @@ before_action:set_task, only: %i(show edit update destroy)
   def params_task
     params.require(:task).permit(:name,:description)
   end
+  
+  def task_logged_in_user
+    unless logged_in?
+      flash[:danger] = "ログインしてください"
+      redirect_to login_url
+    end
+  end
+  
+  def correct_user
+    unless @user == current_user
+      flash[:danger] ="ログインしてください"
+      redirect_to login_url
+    end
+  end
+
 end
