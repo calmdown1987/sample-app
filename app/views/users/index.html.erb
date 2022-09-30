@@ -13,14 +13,19 @@
     <tbody>
       <% @users.each do |user| %>
       <tr>
-        <td><%= link_to user.name, user %></td>
-      <td>
-        <% unless user.admin? %>
-          <div class="text-right">
-            <%= link_to "削除", user_path(user.id), method: :delete, data: { confirm: "#{user.name}を削除します。よろしいですか?"}, class:"btn btn-danger" %>
-          </div>
+        <td>
+        <%= link_to user.name, user, class:"label-user-name" %>
+        <% if user.admin? %>
+          <span class="label label-primary user-label">管理者</span>
+        <% else %>
+          <span class="label label-success user-label">一般</span>
         <% end %>
-      </td>
+        </td>
+          <td class="align-right">
+        <% unless user.admin? %>
+          <%= link_to "削除", user_path(user.id), method: :delete, data: { confirm: "#{user.name}を削除します。よろしいですか?"}, class:"btn btn-danger pull-right" %>
+        </td>
+        <% end %>
       </tr>
       <% end %>
     </tbody>
