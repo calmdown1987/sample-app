@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :admin_user, only:[:index]
   before_action :correct_user, only:[:edit]
   before_action :admin_or_correct_user, only:[:show]
+  before_action :logged_in_signup, only:[:new]
 
   def show
   end
@@ -76,6 +77,13 @@ class UsersController < ApplicationController
       unless current_user?(@user) || current_user.admin?
         flash[:danger] = "編集権限がありません。"
         redirect_to(root_url)
+      end
+    end
+    
+    def logged_in_signup
+      if logged_in? && !current_user.admin?
+         flash[:danger] = "既にユーザーは作成されています。"
+         redirect_to(root_url)
       end
     end
 end
