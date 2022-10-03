@@ -6,7 +6,7 @@
       <h1 class="top-main-title">TaskApp</h1>
       <p>TaskAppは簡易ToDo管理ツールです。</p>
       <p>↓↓初めてのご利用↓↓</p>
-      <% if current_user && current_user.admin? %>
+      <% if !logged_in? || current_user && current_user.admin? %>
         <a class="btn btn-lg btn-success" href="/signup">アカウント作成</a>
       <% else %>
         <a class="btn btn-lg btn-success nolink" tabindex="-1" href="#">アカウント作成</a>

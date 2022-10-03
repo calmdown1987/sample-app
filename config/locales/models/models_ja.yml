@@ -15,5 +15,7 @@ ja:
       task: タスク
     attributes:
         task:
-          name: 名称
+          id: ID
+          name: 名前
           description: 詳細
+    models:

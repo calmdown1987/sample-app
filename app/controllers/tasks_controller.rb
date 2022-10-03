@@ -1,16 +1,17 @@
 class TasksController < ApplicationController
 before_action:set_user
 before_action:set_task, only: %i(show edit update destroy)
-before_action:task_logged_in_user, only:[:index,:new,:show,:edit]
-before_action:correct_user, only:[:index,:new,:show,:edit]
+before_action:task_logged_in_user, only:[:index,:new,:show]
+before_action:correct_user, only:[:index,:new,:show]
+before_action:correct_user_edit, only:[:edit]
 
 
   def index
-    @tasks = @user.tasks
+    @tasks = @user.tasks.order(created_at: :desc)
   end
   
   def new
-    @task = Task.new    
+    @task = Task.new
   end
   
   def create
@@ -24,6 +25,7 @@ before_action:correct_user, only:[:index,:new,:show,:edit]
   
   def update
     if @task.update_attributes(params_task)
+       flash[:notice] = "タスクを更新しました。"
        redirect_to user_tasks_url
     else
       render :edit
@@ -60,11 +62,18 @@ before_action:correct_user, only:[:index,:new,:show,:edit]
       redirect_to login_url
     end
   end
-  
+
   def correct_user
     unless @user == current_user
-      flash[:danger] ="ログインしてください"
-      redirect_to login_url
+      flash[:danger] = "他のユーザーのページです"
+      redirect_to(root_url)
+    end
+  end
+  
+  def correct_user_edit
+    unless @user == current_user
+      flash[:danger] = "編集権限がありません"
+      redirect_to user_tasks_url(current_user)
     end
   end
 

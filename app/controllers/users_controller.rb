@@ -29,8 +29,11 @@ class UsersController < ApplicationController
   end
   
   def update
-    @user.update_attributes(user_params)
-    redirect_to @user
+    if @user.update_attributes(user_params)
+      redirect_to @user
+    else
+      render :edit
+    end
   end
   
   def edit
@@ -38,6 +41,7 @@ class UsersController < ApplicationController
   
   def destroy
     @user.destroy
+    flash[:danger] = "ユーザーを削除しました。"
     redirect_to users_url
   end
   
@@ -60,8 +64,8 @@ class UsersController < ApplicationController
     
     def admin_user
       unless current_user.admin?
-        flash[:danger] ="管理者のみアクセスもしくは実行できます"
-        redirect_to login_url
+        flash[:danger] ="管理者のみアクセスできます"
+        redirect_to(root_url)
       end
     end
     
@@ -82,8 +86,8 @@ class UsersController < ApplicationController
     
     def logged_in_signup
       if logged_in? && !current_user.admin?
-         flash[:danger] = "既にユーザーは作成されています。"
-         redirect_to(root_url)
+         flash[:danger] = "すでにログインしています。"
+         redirect_to user_url(current_user)
       end
     end
 end

@@ -20,4 +20,7 @@ module TasksHelper
     !current_user.nil?
   end
   
+  def correct_userf
+  end
+  
 end
